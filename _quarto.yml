@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Beep Beep"
+  site-url: https://lovetree128.github.io/Beep-Beep
 
 format:
   html:

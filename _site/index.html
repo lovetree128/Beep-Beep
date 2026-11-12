@@ -145,7 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="37f703f7" class="cell" data-execution_count="1">
+<div id="840212a6" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -168,7 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="explore-the-dataset">Explore the dataset</h2>
 <p>Let’s take a look at the data the company collected about its customers’ credit card payment status.</p>
 <p><a href="https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset">Here</a> is the documentation for the data: you can find the description of every column there and download the dataset to play with if you want.</p>
-<div id="eb9ca505" class="cell" data-execution_count="2">
+<div id="7bd0876c" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_set <span class="op">=</span> pd.read_csv(<span class="st">"UCI_Credit_Card.csv"</span>, index_col<span class="op">=</span><span class="st">"ID"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data_set.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
@@ -358,7 +358,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We are relying on the last column of the dataset, <code>default.payment.next.month</code>, to tell us whether the customer can pay off their credit card on time.</p>
 <p>This column is called the <a href="https://h2o.ai/wiki/target-variable/"><strong>target</strong></a>. The main goal of our model is to use the data from the rest of the columns to predict the target, so that we can use the result to determine whether we should grant a credit card to a customer. Those columns are called <a href="https://en.wikipedia.org/wiki/Feature_(machine_learning)"><strong>features</strong></a>.</p>
 <p>Let’s look at the histograms of some of the features and their relationship with the target.</p>
-<div id="cdfbab1b" class="cell" data-execution_count="3">
+<div id="b547c952" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/output.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
@@ -369,7 +369,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>From the histogram of AGE, we can see that customers aged around 25–30 are more likely to pay on time.</p>
-<div id="44a20a8b" class="cell" data-execution_count="4">
+<div id="3c5e3dc9" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/limitbaloutput.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
@@ -380,7 +380,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>From the histogram of LIMIT_BAL, we can see that customers with lower credit limits are more likely to default.</p>
-<div id="d0a070b1" class="cell" data-execution_count="5">
+<div id="4accea0a" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/classdistribution.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
@@ -797,7 +797,7 @@ SVC
 <p>In addition, if our boss is unhappy about rejecting too many customers, we can explain our reasoning by showing the SHAP plot for the customer we rejected.</p>
 <section id="example-why-was-this-customer-rejected" class="level3">
 <h3 class="anchored" data-anchor-id="example-why-was-this-customer-rejected">Example: why was this customer rejected?</h3>
-<div id="6822da5d" class="cell" data-execution_count="6">
+<div id="b95bd5de" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/shapdefault.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
@@ -901,7 +901,7 @@ SVC
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/lovetree128\.github\.io\/Beep-Beep");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
