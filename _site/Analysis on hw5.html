@@ -2,20 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.9.36">
+<meta name="generator" content="quarto-1.11.9">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Beep-Beep PAYMENT DECLINED - – Beep Beep</title>
+<title>Beep-Beep: PAYMENT DECLINED – Beep Beep</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
-code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -69,14 +72,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d73debcbbb21be28588b3adc714c7548.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-48eea8e06ff06eb442a2daacfce5ac08.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="fullcontent quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
 
 <div id="quarto-search-results"></div>
 <!-- content -->
@@ -120,11 +124,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- margin-sidebar -->
     
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content" id="quarto-document-content" tabindex="-1">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Beep-Beep PAYMENT DECLINED -</h1>
+<h1 class="title">Beep-Beep: PAYMENT DECLINED</h1>
 </div>
 
 
@@ -141,32 +145,55 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<div id="cell-1" class="cell" data-execution_count="1">
+<section id="predicting-credit-card-default" class="level2">
+<h2 class="anchored" data-anchor-id="predicting-credit-card-default">Predicting Credit Card Default</h2>
+<p><em>By Shuheng Gao</em></p>
+</section>
+<section id="whats-inside" class="level2">
+<h2 class="anchored" data-anchor-id="whats-inside">What’s inside</h2>
+<ul>
+<li><a href="#now-imagine">Now imagine</a></li>
+<li><a href="#explore-the-dataset">Explore the dataset</a>
+<ul>
+<li><a href="#the-target-and-the-features">The target and the features</a></li>
+<li><a href="#a-first-look-at-the-features">A first look at the features</a></li>
+</ul></li>
+<li><a href="#model-approach">Model approach</a>
+<ul>
+<li><a href="#the-baseline">The baseline</a></li>
+<li><a href="#the-contenders">The contenders</a></li>
+</ul></li>
+<li><a href="#final-results">Final results</a>
+<ul>
+<li><a href="#hyperparameter-tuning">Hyperparameter tuning</a></li>
+<li><a href="#feature-selection">Feature selection</a></li>
+<li><a href="#example-why-was-this-customer-rejected">Example: why was this customer rejected?</a></li>
+</ul></li>
+<li><a href="#caveats">Caveats</a></li>
+<li><a href="#the-bottom-line">The bottom line</a></li>
+</ul>
+<div id="cell-3" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> Image</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="predicting-credit-card-default" class="level1">
-<h1>Predicting Credit Card Default</h1>
-<section id="by-shuheng-gao" class="level5">
-<h5 class="anchored" data-anchor-id="by-shuheng-gao">By Shuheng Gao</h5>
 </section>
-<section id="now-imagine" class="level4">
-<h4 class="anchored" data-anchor-id="now-imagine"><strong>Now imagine</strong></h4>
-<p>Your are a credit card sales representative in a bank of nowhere. You are sitting in a small office sharing one desk with three colleagues of yours.</p>
-<p>Your boss just evaluated your portfolio, and you are COOKED because 80% of your clients are not paying the credit card at all!!! Now, there are two options in front of you, bearing the sarcastic look from your colleagues, and wait untill one day your boss call you to a one-to-one meeting, and kick you out of banking industry.</p>
-<p><strong>OR</strong>, trust the power of <del>Natural Recursion</del> Machine Learning, and comeback as a lengend.</p>
-<p><small>everyone would choose the second option right?</small></p>
-<p>However, to save your job using Machine Learning, we first need to identify what kind of problem is this.</p>
-<p>In the circumstance here, we need to use the known information about our clients to give a prediction on whether they will pay the credit card before due date. Thus, we will use the <a href="https://en.wikipedia.org/wiki/Classification">classification</a> technique in <a href="https://en.wikipedia.org/wiki/Supervised_learning">Supervised Learning</a> to solve the problem.</p>
+<section id="now-imagine" class="level2">
+<h2 class="anchored" data-anchor-id="now-imagine">Now imagine</h2>
+<p>You are a credit card sales representative at a bank in the middle of nowhere. You sit in a small office, sharing one desk with three of your colleagues.</p>
+<p>Your boss has just evaluated your portfolio, and you are COOKED, because 80% of your customers are not paying off their credit cards at all!!! Now there are two options in front of you: keep bearing the sarcastic looks of your colleagues and wait until the day your boss calls you into a one-on-one meeting and kicks you out of the banking industry.</p>
+<p><strong>OR</strong>, trust the power of <del>Natural Recursion</del> Machine Learning and come back as a legend.</p>
+<p><small>Everyone would choose the second option, right?</small></p>
+<p>However, to save your job using Machine Learning, we first need to identify what kind of problem this is.</p>
+<p>In this case, we need to use the known information about our customers to predict whether they will pay off their credit cards before the due date. Thus, we will use the <a href="https://en.wikipedia.org/wiki/Classification">classification</a> technique from <a href="https://en.wikipedia.org/wiki/Supervised_learning">Supervised Learning</a> to solve the problem.</p>
 </section>
-<section id="explore-the-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="explore-the-dataset"><strong>Explore the Dataset</strong></h4>
-<p>Let’s have look on the data the company collected on the credit card payment status of the clients</p>
-<p><a href="https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset">Here</a> are the information of the data, you can find the description of every column below and download the dataset to play if you want.</p>
-<div id="cell-5" class="cell" data-execution_count="2">
+<section id="explore-the-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="explore-the-dataset">Explore the dataset</h2>
+<p>Let’s take a look at the data the company collected about its customers’ credit card payment status.</p>
+<p><a href="https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset">Here</a> is the documentation for the data: you can find the description of every column there and download the dataset to play with if you want.</p>
+<div id="cell-6" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data_set <span class="op">=</span> pd.read_csv(<span class="st">"UCI_Credit_Card.csv"</span>, index_col<span class="op">=</span><span class="st">"ID"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data_set.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="2">
@@ -352,11 +379,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Do you see any pattern in the first five customers we have here? Of course you do not because no one can! That’s why we need to carry out a Machine Learning pipeline to find that pattern.</p>
-<p>We are depending on the last column of the dataset, which is default.payment.next.month, to tell us if the customer can pay the credit card on time.</p>
-<p>This is called <a href="https://h2o.ai/wiki/target-variable/"><strong>target</strong></a> in our problem, the main goal of our model is to use the data from the rest of the columns to predict the target so that we can use the result to determine whether we should grant a credit card to the customer. Those columns are called <a href="https://en.wikipedia.org/wiki/Feature_(machine_learning)"><strong>features</strong></a></p>
-<p>Let’s look at the histogram of some of the features and their relationship with the target.</p>
-<div id="cell-7" class="cell" data-execution_count="3">
+<section id="the-target-and-the-features" class="level3">
+<h3 class="anchored" data-anchor-id="the-target-and-the-features">The target and the features</h3>
+<p>Do you see any pattern in the first five customers? Of course you don’t, because no one can! That’s why we need to run a Machine Learning pipeline to find that pattern.</p>
+<p>We are relying on the last column of the dataset, <code>default.payment.next.month</code>, to tell us whether the customer can pay off their credit card on time.</p>
+<p>This column is called the <a href="https://h2o.ai/wiki/target-variable/"><strong>target</strong></a>. The main goal of our model is to use the data from the rest of the columns to predict the target, so that we can use the result to determine whether we should grant a credit card to a customer. Those columns are called <a href="https://en.wikipedia.org/wiki/Feature_(machine_learning)"><strong>features</strong></a>.</p>
+</section>
+<section id="a-first-look-at-the-features" class="level3">
+<h3 class="anchored" data-anchor-id="a-first-look-at-the-features">A first look at the features</h3>
+<p>Let’s look at the histograms of some of the features and their relationship with the target.</p>
+<div id="cell-9" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/output.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
@@ -366,8 +398,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>From the histogram of AGE, we can see that the customers in age around 25-30 are more likely to pay on time.</p>
-<div id="cell-9" class="cell" data-execution_count="4">
+<p><em>Figure 1 — Histogram of AGE, split by default status (0 = paid on time, 1 = defaulted).</em></p>
+<p>From the histogram of AGE, we can see that customers aged around 25–30 are more likely to pay on time.</p>
+<div id="cell-11" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/limitbaloutput.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
@@ -377,8 +410,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>From the histogram of LIMIT_BAL, we can see that the customers with lower credit limit are more likely to have default payment.</p>
-<div id="cell-11" class="cell" data-execution_count="5">
+<p><em>Figure 2 — Histogram of LIMIT_BAL, split by default status.</em></p>
+<p>From the histogram of LIMIT_BAL, we can see that customers with lower credit limits are more likely to default.</p>
+<div id="cell-13" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/classdistribution.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
@@ -388,413 +422,265 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>The distribution above shows that the class of target is imbalanced, we will see the effect of it later.</p>
-<p>In this phase of Machine Learning problem, we need to examine more information of the dataset to find the hidden pattern of the target and features, so that we can apply these findings to the subsequent steps of the training.</p>
+<p><em>Figure 3 — Class distribution of the target (0 = paid, 1 = defaulted).</em></p>
+<p>The distribution above shows that the target classes are imbalanced. We will see the effect of that later.</p>
+<p>At this stage of a Machine Learning problem, we need to examine more of the dataset to find the hidden pattern linking the target and the features, so that we can apply these findings to later steps of training.</p>
 </section>
-<section id="model-approach" class="level4">
-<h4 class="anchored" data-anchor-id="model-approach"><strong>Model Approach</strong></h4>
-<p>First, carry out a baseline model. Our model approaches should have better performance than the baseline, or it would be really useless (I mean really).</p>
-<p>The dummy classifier will predict all samples as the majority.</p>
-<p>Below is the performance of it.</p>
-<div>
-
-<table class="dataframe table table-sm table-striped small">
+</section>
+<section id="model-approach" class="level2">
+<h2 class="anchored" data-anchor-id="model-approach">Model approach</h2>
+<section id="the-baseline" class="level3">
+<h3 class="anchored" data-anchor-id="the-baseline">The baseline</h3>
+<p>First, let’s build a baseline model. Any model we try should outperform the baseline, or it is truly useless (and I mean truly).</p>
+<p>The dummy classifier predicts every sample as the majority class.</p>
+<p>Below is its performance across the five folds:</p>
+<table class="caption-top table">
 <thead>
-<tr>
-<th>
-</th>
-<th>
-fit_time
-</th>
-<th>
-score_time
-</th>
-<th>
-test_score
-</th>
-<th>
-train_score
-</th>
+<tr class="header">
+<th style="text-align: left;">Fold</th>
+<th style="text-align: right;">Fit time (s)</th>
+<th style="text-align: right;">Score time (s)</th>
+<th style="text-align: right;">Test score</th>
+<th style="text-align: right;">Train score</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<th>
-0
-</th>
-<td>
-0.024238
-</td>
-<td>
-0.005114
-</td>
-<td>
-0.776905
-</td>
-<td>
-0.776726
-</td>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: right;">0.024238</td>
+<td style="text-align: right;">0.005114</td>
+<td style="text-align: right;">0.776905</td>
+<td style="text-align: right;">0.776726</td>
 </tr>
-<tr>
-<th>
-1
-</th>
-<td>
-0.010726
-</td>
-<td>
-0.004287
-</td>
-<td>
-0.776905
-</td>
-<td>
-0.776726
-</td>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">0.010726</td>
+<td style="text-align: right;">0.004287</td>
+<td style="text-align: right;">0.776905</td>
+<td style="text-align: right;">0.776726</td>
 </tr>
-<tr>
-<th>
-2
-</th>
-<td>
-0.011634
-</td>
-<td>
-0.004830
-</td>
-<td>
-0.776667
-</td>
-<td>
-0.776786
-</td>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: right;">0.011634</td>
+<td style="text-align: right;">0.004830</td>
+<td style="text-align: right;">0.776667</td>
+<td style="text-align: right;">0.776786</td>
 </tr>
-<tr>
-<th>
-3
-</th>
-<td>
-0.011600
-</td>
-<td>
-0.004399
-</td>
-<td>
-0.776667
-</td>
-<td>
-0.776786
-</td>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">0.011600</td>
+<td style="text-align: right;">0.004399</td>
+<td style="text-align: right;">0.776667</td>
+<td style="text-align: right;">0.776786</td>
 </tr>
-<tr>
-<th>
-4
-</th>
-<td>
-0.010507
-</td>
-<td>
-0.004063
-</td>
-<td>
-0.776667
-</td>
-<td>
-0.776786
-</td>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">0.010507</td>
+<td style="text-align: right;">0.004063</td>
+<td style="text-align: right;">0.776667</td>
+<td style="text-align: right;">0.776786</td>
 </tr>
 </tbody>
 </table>
-</div>
-<section id="the-dummy-classifier-has-a-decent-performance-due-to-the-imbalance-of-our-data." class="level6">
-<h6 class="anchored" data-anchor-id="the-dummy-classifier-has-a-decent-performance-due-to-the-imbalance-of-our-data.">The dummy classifier has a decent performance due to the imbalance of our data.</h6>
-<p>Now, we gotta pick the suitable model to tackle the problem here.</p>
-<p>For the most of the time, we can train different models on the same data and choose the model with the best performance.</p>
-<p>I tried four different models, RandomForest, LightGBM, KNN and SVC-RBF.</p>
-<div>
-
-<table class="dataframe table table-sm table-striped small">
+<p><em>The dummy classifier performs decently, thanks to the imbalance in our data.</em></p>
+</section>
+<section id="the-contenders" class="level3">
+<h3 class="anchored" data-anchor-id="the-contenders">The contenders</h3>
+<p>Now we have to pick a suitable model to tackle the problem.</p>
+<p>Most of the time, we can train different models on the same data and choose the one with the best performance.</p>
+<p>I tried four different models: RandomForest, LightGBM, KNN, and SVC (with an RBF kernel).</p>
+<p><strong>Training scores and fit time</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
 <thead>
-<tr>
-<th>
-</th>
-<th>
-Model
-</th>
-<th>
-Train Accuracy
-</th>
-<th>
-Test Accuracy
-</th>
-<th>
-Train F1
-</th>
-<th>
-Test F1
-</th>
-<th>
-Train Precision
-</th>
-<th>
-Test Precision
-</th>
-<th>
-Train Recall
-</th>
-<th>
-Test Recall
-</th>
-<th>
-Train AUC
-</th>
-<th>
-Test AUC
-</th>
-<th>
-Fit_time
-</th>
-<th>
-Score_time
-</th>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">Train Accuracy</th>
+<th style="text-align: right;">Train F1</th>
+<th style="text-align: right;">Train Precision</th>
+<th style="text-align: right;">Train Recall</th>
+<th style="text-align: right;">Train AUC</th>
+<th style="text-align: right;">Fit time (s)</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<th>
-0
-</th>
-<td>
-RandomForest
-</td>
-<td>
-0.999333
-</td>
-<td>
-0.814190
-</td>
-<td>
-0.998506
-</td>
-<td>
-0.473127
-</td>
-<td>
-0.999359
-</td>
-<td>
-0.645737
-</td>
-<td>
-0.997654
-</td>
-<td>
-0.373723
-</td>
-<td>
-0.999997
-</td>
-<td>
-0.761852
-</td>
-<td>
-2.956134
-</td>
-<td>
-0.114656
-</td>
+<tr class="odd">
+<td style="text-align: left;">RandomForest</td>
+<td style="text-align: right;">0.999333</td>
+<td style="text-align: right;">0.998506</td>
+<td style="text-align: right;">0.999359</td>
+<td style="text-align: right;">0.997654</td>
+<td style="text-align: right;">0.999997</td>
+<td style="text-align: right;">2.956134</td>
 </tr>
-<tr>
-<th>
-1
-</th>
-<td>
-LightGBM
-</td>
-<td>
-0.853905
-</td>
-<td>
-0.819429
-</td>
-<td>
-0.579869
-</td>
-<td>
-0.479821
-</td>
-<td>
-0.809813
-</td>
-<td>
-0.672376
-</td>
-<td>
-0.451632
-</td>
-<td>
-0.373080
-</td>
-<td>
-0.903300
-</td>
-<td>
-0.778118
-</td>
-<td>
-0.124549
-</td>
-<td>
-0.022885
-</td>
+<tr class="even">
+<td style="text-align: left;"><strong>LightGBM</strong></td>
+<td style="text-align: right;">0.853905</td>
+<td style="text-align: right;">0.579869</td>
+<td style="text-align: right;">0.809813</td>
+<td style="text-align: right;">0.451632</td>
+<td style="text-align: right;">0.903300</td>
+<td style="text-align: right;">0.124549</td>
 </tr>
-<tr>
-<th>
-2
-</th>
-<td>
-KNN
-</td>
-<td>
-0.844429
-</td>
-<td>
-0.793429
-</td>
-<td>
-0.579013
-</td>
-<td>
-0.438091
-</td>
-<td>
-0.731262
-</td>
-<td>
-0.557835
-</td>
-<td>
-0.479255
-</td>
-<td>
-0.360710
-</td>
-<td>
-0.881670
-</td>
-<td>
-0.703641
-</td>
-<td>
-0.012707
-</td>
-<td>
-0.106601
-</td>
+<tr class="odd">
+<td style="text-align: left;">KNN</td>
+<td style="text-align: right;">0.844429</td>
+<td style="text-align: right;">0.579013</td>
+<td style="text-align: right;">0.731262</td>
+<td style="text-align: right;">0.479255</td>
+<td style="text-align: right;">0.881670</td>
+<td style="text-align: right;">0.012707</td>
 </tr>
-<tr>
-<th>
-3
-</th>
-<td>
-SVC
-</td>
-<td>
-0.824286
-</td>
-<td>
-0.819333
-</td>
-<td>
-0.482143
-</td>
-<td>
-0.467458
-</td>
-<td>
-0.704785
-</td>
-<td>
-0.683920
-</td>
-<td>
-0.366414
-</td>
-<td>
-0.355161
-</td>
-<td>
-0.784204
-</td>
-<td>
-0.719540
-</td>
-<td>
-4.426527
-</td>
-<td>
-1.792671
-</td>
+<tr class="even">
+<td style="text-align: left;">SVC</td>
+<td style="text-align: right;">0.824286</td>
+<td style="text-align: right;">0.482143</td>
+<td style="text-align: right;">0.704785</td>
+<td style="text-align: right;">0.366414</td>
+<td style="text-align: right;">0.784204</td>
+<td style="text-align: right;">4.426527</td>
 </tr>
 </tbody>
 </table>
-</div>
-<p>Hmmmm, looks like LightGBM has the highest Test accuracy. SVC is also doing great but its train/score time is too long and the F1 score is not ideal. Thus, we will choose LightGBM as our model.</p>
+<p><strong>Test scores and score time</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">Test Accuracy</th>
+<th style="text-align: right;">Test F1</th>
+<th style="text-align: right;">Test Precision</th>
+<th style="text-align: right;">Test Recall</th>
+<th style="text-align: right;">Test AUC</th>
+<th style="text-align: right;">Score time (s)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">RandomForest</td>
+<td style="text-align: right;">0.814190</td>
+<td style="text-align: right;">0.473127</td>
+<td style="text-align: right;">0.645737</td>
+<td style="text-align: right;">0.373723</td>
+<td style="text-align: right;">0.761852</td>
+<td style="text-align: right;">0.114656</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>LightGBM</strong></td>
+<td style="text-align: right;">0.819429</td>
+<td style="text-align: right;">0.479821</td>
+<td style="text-align: right;">0.672376</td>
+<td style="text-align: right;">0.373080</td>
+<td style="text-align: right;">0.778118</td>
+<td style="text-align: right;">0.022885</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">KNN</td>
+<td style="text-align: right;">0.793429</td>
+<td style="text-align: right;">0.438091</td>
+<td style="text-align: right;">0.557835</td>
+<td style="text-align: right;">0.360710</td>
+<td style="text-align: right;">0.703641</td>
+<td style="text-align: right;">0.106601</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SVC</td>
+<td style="text-align: right;">0.819333</td>
+<td style="text-align: right;">0.467458</td>
+<td style="text-align: right;">0.683920</td>
+<td style="text-align: right;">0.355161</td>
+<td style="text-align: right;">0.719540</td>
+<td style="text-align: right;">1.792671</td>
+</tr>
+</tbody>
+</table>
+<p><em>Bold marks the model we chose. RandomForest’s near-perfect training scores are a textbook case of overfitting.</em></p>
+<p>Hmmmm, it looks like LightGBM has the highest test accuracy. SVC is also doing great, but its training and scoring times are too long, and its F1 score is not ideal. Thus, we will choose LightGBM as our model.</p>
 </section>
 </section>
-<section id="final-results" class="level4">
-<h4 class="anchored" data-anchor-id="final-results">Final Results</h4>
-<p>The LightGBM model now has a test accuracy of 0.819 running on default hyperparameters. Do we still have a chance to improve it?</p>
-<p>I carried out a hyperparameter optimization and got similar scorings:</p>
-<p>fit_time 0.132054</p>
-<p>score_time 0.026210</p>
-<p>test_accuracy 0.818524</p>
-<p>train_accuracy 0.840798</p>
-<p>test_f1 0.476182</p>
-<p>train_f1 0.541028</p>
-<p>test_recall 0.369454</p>
-<p>train_recall 0.420328</p>
-<p>test_precision 0.669862</p>
-<p>train_precision 0.759001</p>
-<p>test_roc_auc 0.782601</p>
-<p>train_roc_auc 0.867151</p>
-<p>What about feature selections?</p>
-<p>Selected Feature:</p>
-<pre><code>    'standardscaler__LIMIT_BAL', 'standardscaler__AGE',
-
-   'standardscaler__PAY_0', 'standardscaler__PAY_2',
-
-   'standardscaler__PAY_3', 'standardscaler__PAY_4',
-
-   'standardscaler__PAY_6', 'standardscaler__BILL_AMT1',
-
-   'standardscaler__BILL_AMT2', 'standardscaler__BILL_AMT3',
-
-   'standardscaler__BILL_AMT4', 'standardscaler__BILL_AMT5',
-
-   'standardscaler__BILL_AMT6', 'standardscaler__PAY_AMT1',
-
-   'standardscaler__PAY_AMT2', 'standardscaler__PAY_AMT3',
-
-   'standardscaler__PAY_AMT4', 'standardscaler__PAY_AMT5',
-
-   'standardscaler__PAY_AMT6', 'standardscaler__DELAY_COUNT',
-
-   'standardscaler__MAX_CREDIT_USAGE_RATIO',
-
-   'ordinalencoder__EDUCATION', 'onehotencoder-1__SEX_2',
-
-   'onehotencoder-2__MARRIAGE_1', 'onehotencoder-2__MARRIAGE_2'])</code></pre>
-<p>The feature selection using RFECV shows that the LightGBM actually selected almost all of the features here.</p>
-<p>Looks like this is the end for the accuracy…</p>
-<p>However, we don’t just evaluate the performance of the model by solely accuracy, we can see that LightGBM actually has decent F1 score and recall. This means that the model can identify the risky customers for us!</p>
-<p>Therefore, although we might reject some new customers that actually can pay their credit card, we can use this conservative strategy to improve our performance!</p>
-<p>In addition, if our boss is unhappy about rejecting too many customers, we can explain our reasoning by showing them the SHAP plot we have for the rejected customer.</p>
+<section id="final-results" class="level2">
+<h2 class="anchored" data-anchor-id="final-results">Final results</h2>
+<p>With default hyperparameters, the LightGBM model already reaches a test accuracy of 0.819. Do we still have a chance to improve it?</p>
+<section id="hyperparameter-tuning" class="level3">
+<h3 class="anchored" data-anchor-id="hyperparameter-tuning">Hyperparameter tuning</h3>
+<p>I carried out a hyperparameter optimization and got similar scores:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Metric</th>
+<th style="text-align: right;">Train</th>
+<th style="text-align: right;">Test</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Accuracy</td>
+<td style="text-align: right;">0.840798</td>
+<td style="text-align: right;">0.818524</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">F1</td>
+<td style="text-align: right;">0.541028</td>
+<td style="text-align: right;">0.476182</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Recall</td>
+<td style="text-align: right;">0.420328</td>
+<td style="text-align: right;">0.369454</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Precision</td>
+<td style="text-align: right;">0.759001</td>
+<td style="text-align: right;">0.669862</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ROC AUC</td>
+<td style="text-align: right;">0.867151</td>
+<td style="text-align: right;">0.782601</td>
+</tr>
+</tbody>
+</table>
+<p><em>(Fit time: 0.132054 s · Score time: 0.026210 s.)</em></p>
 </section>
-<section id="example" class="level4">
-<h4 class="anchored" data-anchor-id="example">Example:</h4>
-<div id="cell-15" class="cell" data-execution_count="6">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/shapdefault.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="feature-selection" class="level3">
+<h3 class="anchored" data-anchor-id="feature-selection">Feature selection</h3>
+<p>What about feature selection?</p>
+<p><strong>RFECV selected 25 features:</strong></p>
+<ul>
+<li><strong>Scaled numeric (21):</strong> <code>LIMIT_BAL</code>, <code>AGE</code>, <code>PAY_0</code>, <code>PAY_2</code>, <code>PAY_3</code>, <code>PAY_4</code>, <code>PAY_6</code>, <code>BILL_AMT1</code>–<code>BILL_AMT6</code>, <code>PAY_AMT1</code>–<code>PAY_AMT6</code>, <code>DELAY_COUNT</code>, <code>MAX_CREDIT_USAGE_RATIO</code></li>
+<li><strong>Ordinal:</strong> <code>EDUCATION</code></li>
+<li><strong>One-hot:</strong> <code>SEX_2</code>, <code>MARRIAGE_1</code>, <code>MARRIAGE_2</code></li>
+</ul>
+<p>Feature selection with RFECV (recursive feature elimination with cross-validation) shows that LightGBM keeps almost all of the features.</p>
+</section>
+<section id="beyond-accuracy" class="level3">
+<h3 class="anchored" data-anchor-id="beyond-accuracy">Beyond accuracy</h3>
+<p>Looks like this is the end of the road for accuracy…</p>
+<p>However, we don’t evaluate a model’s performance by accuracy alone: LightGBM actually has a decent F1 score and recall. This means that the model can identify risky customers for us!</p>
+<p>Therefore, although we might reject some new customers who actually could pay off their credit cards, we can use this conservative strategy to improve our performance!</p>
+<p>In addition, if our boss is unhappy about rejecting too many customers, we can explain our reasoning by showing the SHAP plot for the customer we rejected.</p>
+</section>
+<section id="example-why-was-this-customer-rejected" class="level3">
+<h3 class="anchored" data-anchor-id="example-why-was-this-customer-rejected">Example: why was this customer rejected?</h3>
+<div id="cell-25" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Image(<span class="st">"img/shapdefault.png"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <figure class="figure">
@@ -803,23 +689,37 @@ SVC
 </div>
 </div>
 </div>
-<p>This is a SHAP waterfall plot for a customer that was not able to pay the credit card on time and also successfully predicted by our model.</p>
-<p>We can see that the number of delay payment of this customer in the data collecting months is quite high, this drives our model towards positive, which is the direction of predicting default payment.</p>
-<p>So, the next time your boss asks for the reason of rejecting a specific customer, you can use this plot instead of just saying it’s ML magic!</p>
+<p><em>Figure 4 — SHAP waterfall plot for a customer who defaulted, correctly flagged by the model.</em></p>
+<p>The customer’s number of delayed payments during the data-collection months is quite high, which pushes our model toward a positive prediction — the direction of default.</p>
+<p>So, the next time your boss asks why we rejected a specific customer, you can use this plot instead of just saying “it’s ML magic!”</p>
 </section>
-<section id="caveats" class="level4">
-<h4 class="anchored" data-anchor-id="caveats">Caveats</h4>
-<ol type="1">
-<li><p>The effect of class imbalance</p>
-<p>In the dataset, the ratio of two target classes is high as 4:1, this makes the even the baseline model can give a decent accuracy score. Although we can still use this model considering the improvment in F1 score and recall, the imbalance is still a significant problem that preventing us from better overall performance in the model.</p></li>
-<li><p>The choice of model</p>
-<p>Due to machine limit and time limit of the project, I was not able to try other kinds of models or fine-tune some of the models, for example, although KNN and SVC showed close performance to the LightGBM, the cost of training time of the two models make it hard to fine-tune their hyperparameters. In addition, the size of the dataset is sufficient for neural network model to train and predict, but I was not able to use it.</p></li>
-<li><p>Limited feature in the dataset</p>
-<p>The features in the dataset only consist financial data and very limited personal data of the customers. If the dataset can be more specific about informations like employment status, income status and savings status of the customers, the model could consider very variables and might give better outcomes.</p></li>
-</ol>
+</section>
+<section id="caveats" class="level2">
+<h2 class="anchored" data-anchor-id="caveats">Caveats</h2>
+<section id="the-effect-of-class-imbalance" class="level3">
+<h3 class="anchored" data-anchor-id="the-effect-of-class-imbalance">1. The effect of class imbalance</h3>
+<p>In the dataset, the ratio of the two target classes is as high as 4:1, which means even the baseline model can give a decent accuracy score. Although we can still use this model considering the improvement in F1 score and recall, the imbalance is still a significant problem that prevents us from achieving better overall performance.</p>
+</section>
+<section id="the-choice-of-model" class="level3">
+<h3 class="anchored" data-anchor-id="the-choice-of-model">2. The choice of model</h3>
+<p>Due to compute and time limits of the project, I was not able to try other kinds of models or fine-tune some of them. For example, although KNN and SVC performed almost as well as LightGBM, the training time of the two models makes it hard to fine-tune their hyperparameters. In addition, the dataset is large enough to train a neural network model on, but I was not able to try one.</p>
+</section>
+<section id="limited-features-in-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="limited-features-in-the-dataset">3. Limited features in the dataset</h3>
+<p>The features in the dataset consist only of financial data and very limited personal data of the customers. If the dataset were more detailed, with information such as employment, income, and savings status of the customers, the model could consider more variables and might give better outcomes.</p>
+</section>
+</section>
+<section id="the-bottom-line" class="level2">
+<h2 class="anchored" data-anchor-id="the-bottom-line">The bottom line</h2>
+<ul>
+<li><strong>Task:</strong> binary classification — will this customer default on their credit card next month?</li>
+<li><strong>Data:</strong> 30,000 customers, 23 features, and a target split roughly 4:1.</li>
+<li><strong>Baseline:</strong> the dummy classifier already scores 0.777 accuracy, which should make you suspicious of accuracy alone.</li>
+<li><strong>Winner:</strong> LightGBM — 0.819 test accuracy, 0.48 test F1, 0.78 test ROC AUC, and fast to train.</li>
+<li><strong>Takeaway:</strong> accuracy flatters a lazy model, but F1, recall, and a SHAP plot are what actually save your job.</li>
+</ul>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -896,12 +796,13 @@ SVC
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/lovetree128\.github\.io\/Beep-Beep\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
       // Inspect non-navigation links and adorn them if external
-     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
       for (var i=0; i<links.length; i++) {
         const link = links[i];
         if (!isInternal(link.href)) {
@@ -910,8 +811,69 @@ SVC
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+          if (!link.classList.contains('no-external-icon')) {
+          }
         }
       }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
       const config = {
         allowHTML: true,
@@ -925,6 +887,7 @@ SVC
         interactiveBorder: 10,
         theme: 'quarto',
         placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
       };
       if (contentFn) {
         config.content = contentFn;
@@ -1087,44 +1050,54 @@ SVC
           const lineIds = lines.map((line) => {
             return targetCell + "-" + line;
           })
-          let top = null;
-          let height = null;
-          let parent = null;
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
           if (lineIds.length > 0) {
-              //compute the position of the single el (top and bottom and make a div)
-              const el = window.document.getElementById(lineIds[0]);
-              top = el.offsetTop;
-              height = el.offsetHeight;
-              parent = el.parentElement.parentElement;
-            if (lineIds.length > 1) {
-              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-              height = bottom - top;
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
             }
-            if (top !== null && height !== null && parent !== null) {
-              // cook up a div (if necessary) and position it 
-              let div = window.document.getElementById("code-annotation-line-highlight");
-              if (div === null) {
-                div = window.document.createElement("div");
-                div.setAttribute("id", "code-annotation-line-highlight");
-                div.style.position = 'absolute';
-                parent.appendChild(div);
-              }
-              div.style.top = top - 2 + "px";
-              div.style.height = height + 4 + "px";
-              div.style.left = 0;
-              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-              if (gutterDiv === null) {
-                gutterDiv = window.document.createElement("div");
-                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-                gutterDiv.style.position = 'absolute';
-                const codeCell = window.document.getElementById(targetCell);
-                const gutter = codeCell.querySelector('.code-annotation-gutter');
-                gutter.appendChild(gutterDiv);
-              }
-              gutterDiv.style.top = top - 2 + "px";
-              gutterDiv.style.height = height + 4 + "px";
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
             }
+            placeBand(gutterDiv, el, lastEl);
             selectedAnnoteEl = annoteEl;
           }
         };
@@ -1222,6 +1195,9 @@ SVC
       }
     }
   });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
   </script>
 </div> <!-- /content -->
 

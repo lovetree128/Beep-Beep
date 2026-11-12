@@ -1,5 +1,5 @@
 ---
-title: Beep-Beep PAYMENT DECLINED -
+title: "Beep-Beep: PAYMENT DECLINED"
 jupyter: python3
 ---
 
@@ -13,70 +13,68 @@ from IPython.display import Image
 
 # Predicting Credit Card Default
 
-##### By Shuheng Gao
+*By Shuheng Gao*
 
+## Now imagine
 
-#### **Now imagine**
+You are a credit card sales representative at a bank in the middle of nowhere. You sit in a small office, sharing one desk with three of your colleagues.
 
-Your are a credit card sales representative in a bank of nowhere. You are sitting in a small office sharing one desk with three colleagues of yours. 
+Your boss has just evaluated your portfolio, and you are COOKED, because 80% of your customers are not paying off their credit cards at all!!! Now there are two options in front of you: keep bearing the sarcastic looks of your colleagues and wait until the day your boss calls you into a one-on-one meeting and kicks you out of the banking industry.
 
-Your boss just evaluated your portfolio, and you are COOKED because 80% of your clients are not paying the credit card at all!!! Now, there are two options in front of you, bearing the sarcastic look from your colleagues, and wait untill one day your boss call you to a one-to-one meeting, and kick you out of banking industry. 
+**OR**, trust the power of ~~Natural Recursion~~ Machine Learning and come back as a legend.
 
-**OR**, trust the power of ~~Natural Recursion~~ Machine Learning, and comeback as a lengend.
+<small>Everyone would choose the second option, right?</small>
 
-<small>everyone would choose the second option right?</small>
+However, to save your job using Machine Learning, we first need to identify what kind of problem this is.
 
-However, to save your job using Machine Learning, we first need to identify what kind of problem is this.
+In this case, we need to use the known information about our customers to predict whether they will pay off their credit cards before the due date. Thus, we will use the [classification](https://en.wikipedia.org/wiki/Classification) technique from [Supervised Learning](https://en.wikipedia.org/wiki/Supervised_learning) to solve the problem.
 
-In the circumstance here, we need to use the known information about our clients to give a prediction on whether they will pay the credit card before due date. Thus, we will use the [classification](https://en.wikipedia.org/wiki/Classification) technique in [Supervised Learning](https://en.wikipedia.org/wiki/Supervised_learning) to solve the problem.
+## Explore the dataset
 
+Let's take a look at the data the company collected about its customers' credit card payment status.
 
-#### **Explore the Dataset**
-
-Let's have look on the data the company collected on the credit card payment status of the clients
-
-[Here](https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset) are the information of the data, you can find the description of every column below and download the dataset to play if you want.
+[Here](https://www.kaggle.com/datasets/uciml/default-of-credit-card-clients-dataset) is the documentation for the data: you can find the description of every column there and download the dataset to play with if you want.
 
 ```{python}
 data_set = pd.read_csv("UCI_Credit_Card.csv", index_col="ID")
 data_set.head()
 ```
 
-Do you see any pattern in the first five customers we have here? Of course you do not because no one can! That's why we need to carry out a Machine Learning pipeline to find that pattern.
+Do you see any pattern in the first five customers? Of course you don't, because no one can! That's why we need to run a Machine Learning pipeline to find that pattern.
 
-We are depending on the last column of the dataset, which is default.payment.next.month, to tell us if the customer can pay the credit card on time. 
+We are relying on the last column of the dataset, `default.payment.next.month`, to tell us whether the customer can pay off their credit card on time.
 
-This is called [**target**](https://h2o.ai/wiki/target-variable/) in our problem, the main goal of our model is to use the data from the rest of the columns to predict the target so that we can use the result to determine whether we should grant a credit card to the customer. Those columns are called [**features**](https://en.wikipedia.org/wiki/Feature_(machine_learning))
+This column is called the [**target**](https://h2o.ai/wiki/target-variable/). The main goal of our model is to use the data from the rest of the columns to predict the target, so that we can use the result to determine whether we should grant a credit card to a customer. Those columns are called [**features**](https://en.wikipedia.org/wiki/Feature_(machine_learning)).
 
-Let's look at the histogram of some of the features and their relationship with the target.
+Let's look at the histograms of some of the features and their relationship with the target.
 
 ```{python}
 Image("img/output.png")
 ```
 
-From the histogram of AGE, we can see that the customers in age around 25-30 are more likely to pay on time.
+From the histogram of AGE, we can see that customers aged around 25–30 are more likely to pay on time.
 
 ```{python}
 Image("img/limitbaloutput.png")
 ```
 
-From the histogram of LIMIT_BAL, we can see that the customers with lower credit limit are more likely to have default payment.
+From the histogram of LIMIT_BAL, we can see that customers with lower credit limits are more likely to default.
 
 ```{python}
 Image("img/classdistribution.png")
 ```
 
-The distribution above shows that the class of target is imbalanced, we will see the effect of it later.
+The distribution above shows that the target classes are imbalanced. We will see the effect of that later.
 
-In this phase of Machine Learning problem, we need to examine more information of the dataset to find the hidden pattern of the target and features, so that we can apply these findings to the subsequent steps of the training.
+At this stage of a Machine Learning problem, we need to examine more of the dataset to find the hidden pattern linking the target and the features, so that we can apply these findings to later steps of training.
 
-#### **Model Approach**
+## Model approach
 
-First, carry out a baseline model. Our model approaches should have better performance than the baseline, or it would be really useless (I mean really).
+First, let's build a baseline model. Any model we try should outperform the baseline, or it is truly useless (and I mean truly).
 
-The dummy classifier will predict all samples as the majority.
+The dummy classifier predicts every sample as the majority class.
 
-Below is the performance of it.
+Below is its performance across the five folds:
 
 <div>
 <style scoped>
@@ -142,13 +140,13 @@ Below is the performance of it.
 </table>
 </div>
 
-###### The dummy classifier has a decent performance due to the imbalance of our data.
+*The dummy classifier performs decently, thanks to the imbalance in our data.*
 
-Now, we gotta pick the suitable model to tackle the problem here. 
+Now we have to pick a suitable model to tackle the problem.
 
-For the most of the time, we can train different models on the same data and choose the model with the best performance.
+Most of the time, we can train different models on the same data and choose the one with the best performance.
 
-I tried four different models, RandomForest, LightGBM, KNN and SVC-RBF. 
+I tried four different models: RandomForest, LightGBM, KNN, and SVC (with an RBF kernel).
 
 <div>
 <style scoped>
@@ -252,101 +250,64 @@ I tried four different models, RandomForest, LightGBM, KNN and SVC-RBF.
 </table>
 </div>
 
-Hmmmm, looks like LightGBM has the highest Test accuracy. SVC is also doing great but its train/score time is too long and the F1 score is not ideal. Thus, we will choose LightGBM as our model.
+Hmmmm, it looks like LightGBM has the highest test accuracy. SVC is also doing great, but its training and scoring times are too long, and its F1 score is not ideal. Thus, we will choose LightGBM as our model.
 
-#### Final Results
+## Final results
 
-The LightGBM model now has a test accuracy of 0.819 running on default hyperparameters. Do we still have a chance to improve it? 
+With default hyperparameters, the LightGBM model already reaches a test accuracy of 0.819. Do we still have a chance to improve it?
 
-I carried out a hyperparameter optimization and got similar scorings:
+I carried out a hyperparameter optimization and got similar scores:
 
-fit_time           0.132054
+| Metric | Train | Test |
+| --- | --- | --- |
+| Accuracy | 0.840798 | 0.818524 |
+| F1 | 0.541028 | 0.476182 |
+| Recall | 0.420328 | 0.369454 |
+| Precision | 0.759001 | 0.669862 |
+| ROC AUC | 0.867151 | 0.782601 |
 
-score_time         0.026210
+*(Fit time: 0.132054 s · Score time: 0.026210 s.)*
 
-test_accuracy      0.818524
+What about feature selection?
 
-train_accuracy     0.840798
+**RFECV selected 25 features:**
 
-test_f1            0.476182
+- **Scaled numeric (21):** `LIMIT_BAL`, `AGE`, `PAY_0`, `PAY_2`, `PAY_3`, `PAY_4`, `PAY_6`, `BILL_AMT1`–`BILL_AMT6`, `PAY_AMT1`–`PAY_AMT6`, `DELAY_COUNT`, `MAX_CREDIT_USAGE_RATIO`
+- **Ordinal:** `EDUCATION`
+- **One-hot:** `SEX_2`, `MARRIAGE_1`, `MARRIAGE_2`
 
-train_f1           0.541028
+Feature selection with RFECV (recursive feature elimination with cross-validation) shows that LightGBM keeps almost all of the features.
 
-test_recall        0.369454
+Looks like this is the end of the road for accuracy...
 
-train_recall       0.420328
+However, we don't evaluate a model's performance by accuracy alone: LightGBM actually has a decent F1 score and recall. This means that the model can identify risky customers for us!
 
-test_precision     0.669862
+Therefore, although we might reject some new customers who actually could pay off their credit cards, we can use this conservative strategy to improve our performance!
 
-train_precision    0.759001
+In addition, if our boss is unhappy about rejecting too many customers, we can explain our reasoning by showing the SHAP plot for the customer we rejected.
 
-test_roc_auc       0.782601
-
-train_roc_auc      0.867151
-
-What about feature selections?
-
-Selected Feature:
-
-        'standardscaler__LIMIT_BAL', 'standardscaler__AGE',
-
-       'standardscaler__PAY_0', 'standardscaler__PAY_2',
-
-       'standardscaler__PAY_3', 'standardscaler__PAY_4',
-
-       'standardscaler__PAY_6', 'standardscaler__BILL_AMT1',
-
-       'standardscaler__BILL_AMT2', 'standardscaler__BILL_AMT3',
-
-       'standardscaler__BILL_AMT4', 'standardscaler__BILL_AMT5',
-
-       'standardscaler__BILL_AMT6', 'standardscaler__PAY_AMT1',
-
-       'standardscaler__PAY_AMT2', 'standardscaler__PAY_AMT3',
-
-       'standardscaler__PAY_AMT4', 'standardscaler__PAY_AMT5',
-
-       'standardscaler__PAY_AMT6', 'standardscaler__DELAY_COUNT',
-
-       'standardscaler__MAX_CREDIT_USAGE_RATIO',
-
-       'ordinalencoder__EDUCATION', 'onehotencoder-1__SEX_2',
-
-       'onehotencoder-2__MARRIAGE_1', 'onehotencoder-2__MARRIAGE_2'])
-
-The feature selection using RFECV shows that the LightGBM actually selected almost all of the features here.
-
-Looks like this is the end for the accuracy...
-
-However, we don't just evaluate the performance of the model by solely accuracy, we can see that LightGBM actually has decent F1 score and recall. This means that the model can identify the risky customers for us!
-
-Therefore, although we might reject some new customers that actually can pay their credit card, we can use this conservative strategy to improve our performance!
-
-In addition, if our boss is unhappy about rejecting too many customers, we can explain our reasoning by showing them the SHAP plot we have for the rejected customer.
-
-#### Example:
+### Example: why was this customer rejected?
 
 ```{python}
 Image("img/shapdefault.png")
 ```
 
-This is a SHAP waterfall plot for a customer that was not able to pay the credit card on time and also successfully predicted by our model.
+This is a SHAP waterfall plot for a customer who failed to pay off their credit card on time, and our model also correctly predicted the default.
 
-We can see that the number of delay payment of this customer in the data collecting months is quite high, this drives our model towards positive, which is the direction of predicting default payment. 
+The customer's number of delayed payments during the data-collection months is quite high, which pushes our model toward a positive prediction — the direction of default.
 
-So, the next time your boss asks for the reason of rejecting a specific customer, you can use this plot instead of just saying it's ML magic!
+So, the next time your boss asks why we rejected a specific customer, you can use this plot instead of just saying "it's ML magic!"
 
-#### Caveats
+## Caveats
 
-1. The effect of class imbalance
+1. **The effect of class imbalance**
 
-    In the dataset, the ratio of two target classes is high as 4:1, this makes the even the baseline model can give a decent accuracy score. Although we can still use this model considering the improvment in F1 score and recall, the imbalance is still a significant problem that preventing us from better overall performance in the model.
+   In the dataset, the ratio of the two target classes is as high as 4:1, which means even the baseline model can give a decent accuracy score. Although we can still use this model considering the improvement in F1 score and recall, the imbalance is still a significant problem that prevents us from achieving better overall performance.
 
-2. The choice of model
+2. **The choice of model**
 
-    Due to machine limit and time limit of the project, I was not able to try other kinds of models or fine-tune some of the models, for example, although KNN and SVC showed close performance to the LightGBM, the cost of training time of the two models make it hard to fine-tune their hyperparameters. In addition, the size of the dataset is sufficient for neural network model to train and predict, but I was not able to use it.
+   Due to compute and time limits of the project, I was not able to try other kinds of models or fine-tune some of them. For example, although KNN and SVC performed almost as well as LightGBM, the training time of the two models makes it hard to fine-tune their hyperparameters. In addition, the dataset is large enough to train a neural network model on, but I was not able to try one.
 
-3. Limited feature in the dataset
+3. **Limited features in the dataset**
 
-    The features in the dataset only consist financial data and very limited personal data of the customers. If the dataset can be more specific about informations like employment status, income status and savings status of the customers, the model could consider very variables and might give better outcomes.
-
+   The features in the dataset consist only of financial data and very limited personal data of the customers. If the dataset were more detailed, with information such as employment, income, and savings status of the customers, the model could consider more variables and might give better outcomes.
